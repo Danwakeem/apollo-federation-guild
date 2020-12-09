@@ -12,17 +12,15 @@ const typeDefs = gql`
     allReviews: [Review]
   }
 
-  type Review @key(fields: "id") {
+  type Review {
     id: Int!
-    userId: Int
+    user: ReviewUser
     message: String
     remoteId: String
-    user: User
   }
 
-  extend type User @key(fields: "id") {
-    id: Int! @external
-    reviews: [Review]
+  type ReviewUser {
+    id: Int!
   }
 `;
 
@@ -32,16 +30,6 @@ const resolvers = {
       return reviews
     },
   },
-  Review: {
-    __resolveReference(review, context) {
-      return reviews.find((r) => r.id === review.id);
-    }
-  },
-  User: {
-    reviews(user) {
-      return reviews.filter((r) => r.user.id === user.id);
-    }
-  }
 };
 
 const server = new ApolloServer({

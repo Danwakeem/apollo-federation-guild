@@ -13,7 +13,7 @@ const typeDefs = gql`
     me: User
   }
 
-  type User @key(fields: "id") {
+  type User {
     id: Int!
     username: String
   }
@@ -25,11 +25,6 @@ const resolvers = {
       return users[0]
     }
   },
-  User: {
-    __resolveReference(user, context) {
-      return users.find((u) => u.id === user.id);
-    }
-  }
 };
 
 const server = new ApolloServer({
